@@ -1,0 +1,137 @@
+{
+  "interface": [
+    {
+      "Interface_name":"初始界面",
+      "font_name":"SimHei",
+      "font_size": 20,
+      "layout": [
+        {
+          "row_num": 2,
+          "col_num": 1,
+          "start_y": 220
+        }
+      ],
+      "buttons": [
+        {
+          "text": "开始游戏",
+          "color": "black",
+          "action": "goto",
+          "target": "关卡选择"
+        },
+        {
+          "text": "游戏设置",
+          "color": "black",
+          "action": "goto",
+          "target": "设置界面"
+        }
+      ]
+    },
+    {
+      "Interface_name":"设置界面",
+      "font_name":"SimHei",
+      "font_size": 20,
+      "layout": [
+        {
+          "row_num": 3,
+          "col_num": 1,
+          "start_y": 0
+        }
+      ],
+      "buttons": [
+        {
+          "text": "格子颜色",
+          "color": "black",
+          "action": "goto",
+          "target": "设置颜色"
+        },
+        {
+          "text": "音乐开关",
+          "color": "black",
+          "action": "toggle_music",
+          "target": null
+        },
+        {
+          "text": "返回初始界面",
+          "color": "black",
+          "action": "goto",
+          "target": "初始界面"
+        }
+      ]
+    },
+    {
+      "Interface_name": "颜色选择界面",
+      "texts": ["黑色", "蓝色", "橙色", "红色", "返回"],
+      "font_name": "SimHei",
+      "font_size": 20,
+      "layout": [
+        {
+          "row_num": 4,
+          "col_num": 1,
+          "start_y": -160
+        }
+      ],
+      "buttons": [
+        {
+          "text": "黑色",
+          "color": "black",
+          "action": "set_color",
+          "target": null
+        },
+        {
+          "text": "蓝色",
+          "color": "blue",
+          "action": "set_color",
+          "target": null
+        },
+        {
+          "text": "橙色",
+          "color": "orange",
+          "action": "set_color",
+          "target": null
+        },
+        {
+          "text": "红色",
+          "color": "red",
+          "action": "set_color",
+          "target": null
+        },
+        {
+          "text": "返回",
+          "color": "black",
+          "action": "goto",
+          "target": "设置界面"
+        }
+      ]
+    },
+    {
+      "Interface_name": "游戏胜利",
+      "texts": ["选择关卡", "返回标题画面"],
+      "font_name": "SimHei",
+      "font_size": 20,
+      "layout": [
+        {
+          "row_num": 2,
+          "col_num": 1,
+          "start_y": 0
+        }
+      ],
+      "buttons": [
+        {
+          "text": "选择关卡",
+          "color": "black",
+          "action": "goto",
+          "target": "关卡选择"
+        },
+        {
+          "text": "返回标题界面",
+          "color": "black",
+          "action": "goto",
+          "target": "初始界面"
+        }
+      ]
+    }
+  ]
+}
+
+
+
