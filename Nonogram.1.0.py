@@ -36,17 +36,8 @@ def Interface( interface_json, window, interface):
                     buttons[i['buttons'][num]['text']] = [rect,i['buttons'][num]['action'],i['buttons'][num]['target']]
                     num += 1
 
-    def draw(self):
-        self.window.fill((227, 227, 227))
-        for i in self.json['interface']:
-            if i['Interface_name'] == self.interface:
-                start_x = self.width // i['layout']['col_sum']
-                start_y = i['layout']['start_y']
-                for j in range(i['layout']['row_sum']):
-                    x = len(i['buttons']['text']) * i['font_size']
-                    y = i['font_size'] + j * i['font_size']
-                    pygame.draw.rect(self.window,'black',(start_x, start_y, x, y), 1)
-
+            return buttons
+    return None
 
 
 class Game:
