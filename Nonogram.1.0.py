@@ -2,6 +2,39 @@ import numpy
 import pygame
 import json
 
+def array_to_left_clues(array): # 获取左提示
+    print('获取左提示')
+    return [[len(z) for z in ''.join(map(str,i)).split('0') if z] for i in array]
+
+def array_to_top_clues(array): # 获取上提示
+    print('获取上提示')
+    array = array.T
+    return array_to_left_clues(array)
+
+def format_clues(array): # 将提示转化为用于显示的列表
+    print('将提示转化为用于显示的列表')
+    left_clues = array_to_left_clues(array)
+    top_clues = array_to_top_clues(array)
+    display_left_clues = [i for i in left_clues]
+    display_top_clues = [[] for _ in range(max([len(i) for i in top_clues]))]
+
+    for i in display_left_clues:
+        i.reverse()
+
+    for i in range(len(display_top_clues)):
+        for j in range(len(top_clues)):
+            try:
+                display_top_clues[i].append(top_clues[j][-(i+1)])
+            except IndexError:
+                display_top_clues[i].append(None)
+
+    for i in range(len(left_clues)):
+        if len(left_clues[i]) < max([len(z) for z in left_clues]):
+            for j in range(max([len(i) for i in left_clues]) - len(left_clues[i])):
+                display_left_clues[i].append(None)
+    return display_top_clues, display_left_clues
+
+
 def Interface( interface_json, window, interface):
     width, height = window.get_size()
     with open(interface_json, 'r', encoding='utf-8') as f:
