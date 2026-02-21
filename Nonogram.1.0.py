@@ -74,8 +74,55 @@ def Interface( interface_json, window, interface):
 
 
 class Game:
-    def __init__(self):
-        pass
+    def __init__(self,window,answer):
+        self.window = window
+        self.buttons = []
+        self.width, self.height = window.get_size()
+        self.answer = answer
+        self.player = numpy.zeros_like(self.answer)
+        self.display_top_clues, self.display_left_clues = format_clues(self.answer)
+        self.width, self.height = window.get_size()
+        self.rect = None
+        self.color = 'black'
+        self.clue_font = pygame.font.SysFont('SmiHei', 30)
+        self.start_x = 0
+        self.start_y = 0
+        self.start_font = pygame.font.SysFont('SimHei', 20)
+
+    def display_levels(self):
+        self.buttons = []
+        start_width = self.width // 4
+        start_height = self.height // 4
+        for i in range(len(levels)):
+            row = i // 5
+            col = i % 5
+            x = start_width + col * 80
+            y = start_height + row * 40
+            text = self.start_font.render(f'第{i + 1}关', True, 'black')
+            text_rect = text.get_rect()
+            text_rect.center = (x + 30, y + 10)  # 按钮宽60，中心点偏移
+            # 打印关卡名
+            self.window.blit(text, text_rect)
+            # 打印关卡框
+            self.buttons.append(pygame.draw.rect(self.window, 'black', (x, y, 60, 20), 1))
+
+    def draw(self):
+        start_x = (960 - len(self.player) * 20) // 2
+        self.start_x = start_x
+        start_y = (540 - len(self.player) * 20) // 2
+        self.start_y = start_y
+        row = len(self.player[0]) * 20
+        col = len(self.player) * 20
+        self.window.fill('white')
+
+        # 打印数织网格
+        self.rect = pygame.draw.rect(self.window, 'black', (start_x, start_y, row, col), 1)
+        for i in range(len(self.player[0])):
+            pygame.draw.line(self.window, 'black', (start_x + i * 20, start_y),
+                             (start_x + i * 20, start_y + len(self.player) * 20), 1)
+        for i in range(len(self.player)):
+            pygame.draw.line(self.window, 'black', (start_x, start_y + i * 20,),
+                             (start_x + len(self.player[0]) * 20, start_y + i * 20), 1)
 
         # 打印上提示
         for i in range(len(self.display_top_clues)):
