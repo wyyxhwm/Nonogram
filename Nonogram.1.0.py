@@ -77,6 +77,41 @@ class Game:
     def __init__(self):
         pass
 
+        # 打印上提示
+        for i in range(len(self.display_top_clues)):
+            for j in range(len(self.display_top_clues[0])):
+                if self.display_top_clues[i][j] is not None:
+                    clue = self.clue_font.render(str(self.display_top_clues[i][j]),True, 'black')
+                    clue_rect = clue.get_rect()
+                    clue_rect.center = (start_x + 10 + j * 20, start_y - 10 - i * 20)
+                    self.window.blit(clue, clue_rect)
+
+        # 打印左提示
+        for i in range(len(self.display_left_clues)):
+            for j in range(len(self.display_left_clues[0])):
+                if self.display_left_clues[i][j] is not None:
+                    clue = self.clue_font.render(str(self.display_left_clues[i][j]), True, 'black')
+                    clue_rect = clue.get_rect()
+                    clue_rect.center = (start_x - 10 - j * 20, start_y + 10 + i * 20)
+                    self.window.blit(clue, clue_rect)
+
+        # 打印玩家绘制内容
+
+        for i in range(len(self.player)):
+            for j in range(len(self.player[0])):
+                if self.player[i][j] == 1:
+                    pygame.draw.rect(self.window, self.color, (start_x + j * 20 + 2, start_y + i * 20 + 2,16,16),0)
+                elif self.player[i][j] == 0:
+                    pygame.draw.rect(self.window, 'white', (start_x + j * 20 + 2, start_y + i * 20 + 2, 16, 16), 0)
+                elif self.player[i][j] == 2:
+                    pygame.draw.rect(self.window, 'white', (start_x + j * 20 + 2, start_y + i * 20 + 2, 16, 16), 0)
+                    pygame.draw.line(self.window,'red',(start_x + j * 20 + 2, start_y + i * 20 + 2),
+                                     (start_x + j * 20 + 2+16, start_y + i * 20 + 2 + 16),1)
+                    pygame.draw.line(self.window, 'red', (start_x + j * 20 + 2 + 16, start_y + i * 20 + 2),
+                                     (start_x + j * 20 + 2 + 16 - 16, start_y + i * 20 + 2 + 16), 1)
+
+    def judge(self):
+        return numpy.array_equal(self.player == 1, self.answer == 1)
 
 if __name__ == '__main__':
     pygame.init()
