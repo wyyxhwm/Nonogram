@@ -78,3 +78,4 @@ while isRunning:
         if now_interface == "关卡选择":
             game.display_level_buttons(window, levels)  # 额外绘制关卡按钮
     pygame.display.update()
+

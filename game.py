@@ -1,6 +1,7 @@
 import numpy
 import pygame
 
+
 def display_level_buttons(window, levels):
     level_buttons = []
     font = pygame.font.SysFont('SimHei', 20)
