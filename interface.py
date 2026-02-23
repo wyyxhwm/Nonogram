@@ -48,7 +48,9 @@ def handle_events(window, buttons: dict, pos):
                 return False
             elif i[1] == 'set_color':
                 return i[2]
-
+            else:
+                print('interface/handle_events()错误')
+    return False
 
 if __name__ == '__main__':
     pygame.init()
