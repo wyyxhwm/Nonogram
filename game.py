@@ -1,6 +1,25 @@
 import numpy
 import pygame
-import json
+
+def display_level_buttons(window, levels):
+    level_buttons = []
+    font = pygame.font.SysFont('SimHei', 20)
+    width, height = window.get_size()
+    start_width = width // 4
+    start_height = height // 4
+    for i in range(len(levels)):
+        row = i // 5
+        col = i % 5
+        x = start_width + col * 80
+        y = start_height + row * 40
+        text = font.render(f'第{i + 1}关', True, 'black')
+        text_rect = text.get_rect()
+        text_rect.center = (x + 30, y + 10)  # 按钮宽60，中心点偏移
+        # 打印关卡名
+        window.blit(text, text_rect)
+        # 打印关卡框
+        level_buttons.append(pygame.draw.rect(window, 'black', (x, y, 60, 20), 1))
+    return level_buttons
 
 def array_to_left_clues(array): # 获取左提示
     print('获取左提示')
@@ -34,77 +53,19 @@ def format_clues(array): # 将提示转化为用于显示的列表
                 display_left_clues[i].append(None)
     return display_top_clues, display_left_clues
 
-
-def Interface( interface_json, window, interface):
-    width, height = window.get_size()
-    with open(interface_json, 'r', encoding='utf-8') as f:
-        j = json.load(f)
-    for i in j['interface']:
-        window.fill((245, 245, 220))
-        if i['name'] == interface:
-            buttons = {}
-            size = i['font_size']
-            font = pygame.font.SysFont(i['font'], size)
-            max_button_len = max([len(x['text']) for x in i['buttons']])
-            start_x = (width - (max_button_len + (len(i['buttons']) - 1) * size)) // 2
-            start_y = (height - i['layout']['row_num'] * 2 * size)  // 2
-            if interface == "标题画面":
-                title_font = pygame.font.SysFont('SimHei', 60)
-                title = title_font.render('数织游戏', True, 'black')
-                title_rect = title.get_rect()
-                title_rect.center = (width // 2, height // 3)
-                window.blit(title, title_rect)
-            x_up = (max_button_len + 1) * size
-            y_up = size + 2
-            x = max_button_len  * size + 2
-            y = size + 2
-            num = 0
-            for r in range(i['layout']['row_num']):
-                for c in range(i['layout']['col_num']):
-                    rect = pygame.draw.rect(window, 'black', (start_x + x_up * c - max_button_len * size // 2, start_y + y_up * r * 2, x, y), 1)
-                    title = font.render(i['buttons'][num]['text'], True, i['buttons'][num]['color'])
-                    title_rect = title.get_rect()
-                    title_rect.center = (start_x + x_up * c, start_y + y_up * r * 2 + size // 2)
-                    window.blit(title, title_rect)
-                    buttons[i['buttons'][num]['text']] = [rect,i['buttons'][num]['action'],i['buttons'][num]['target']]
-                    num += 1
-
-            return buttons
-    return None
-
-
 class Game:
-    def __init__(self,window,answer):
+    def __init__(self, window, answer, color = 'black'):
         self.window = window
-        self.buttons = []
-        self.width, self.height = window.get_size()
         self.answer = answer
         self.player = numpy.zeros_like(self.answer)
         self.display_top_clues, self.display_left_clues = format_clues(self.answer)
         self.width, self.height = window.get_size()
         self.rect = None
-        self.color = 'black'
+        self.color = color
         self.clue_font = pygame.font.SysFont('SmiHei', 30)
         self.start_x = 0
         self.start_y = 0
-        self.start_font = pygame.font.SysFont('SimHei', 20)
-
-    def display_levels(self):
-        self.buttons = []
-        start_width = self.width // 4
-        start_height = self.height // 4
-        for i in range(len(levels)):
-            row = i // 5
-            col = i % 5
-            x = start_width + col * 80
-            y = start_height + row * 40
-            text = self.start_font.render(f'第{i + 1}关', True, 'black')
-            text_rect = text.get_rect()
-            text_rect.center = (x + 30, y + 10)  # 按钮宽60，中心点偏移
-            # 打印关卡名
-            self.window.blit(text, text_rect)
-            # 打印关卡框
-            self.buttons.append(pygame.draw.rect(self.window, 'black', (x, y, 60, 20), 1))
+        print('Game对象创建成功')
 
     def draw(self):
         start_x = (960 - len(self.player) * 20) // 2
@@ -143,7 +104,6 @@ class Game:
                     self.window.blit(clue, clue_rect)
 
         # 打印玩家绘制内容
-
         for i in range(len(self.player)):
             for j in range(len(self.player[0])):
                 if self.player[i][j] == 1:
@@ -151,22 +111,29 @@ class Game:
                 elif self.player[i][j] == 0:
                     pygame.draw.rect(self.window, 'white', (start_x + j * 20 + 2, start_y + i * 20 + 2, 16, 16), 0)
                 elif self.player[i][j] == 2:
+
                     pygame.draw.rect(self.window, 'white', (start_x + j * 20 + 2, start_y + i * 20 + 2, 16, 16), 0)
                     pygame.draw.line(self.window,'red',(start_x + j * 20 + 2, start_y + i * 20 + 2),
                                      (start_x + j * 20 + 2+16, start_y + i * 20 + 2 + 16),1)
                     pygame.draw.line(self.window, 'red', (start_x + j * 20 + 2 + 16, start_y + i * 20 + 2),
                                      (start_x + j * 20 + 2 + 16 - 16, start_y + i * 20 + 2 + 16), 1)
 
+    def process_input(self, button: int):
+        pos_x, pos_y = pygame.mouse.get_pos()
+        if self.rect.collidepoint((pos_x, pos_y)):
+            y = (pos_x - self.start_x) // 20
+            x = (pos_y - self.start_y) // 20
+            if button == 1:
+                if self.player[x][y] == 1:
+                    self.player[x][y] = 0
+                elif self.player[x][y] == 0:
+                    self.player[x][y] = 1
+
+            if button == 3:
+                if self.player[x][y] == 2:
+                    self.player[x][y] = 0
+                else:
+                    self.player[x][y] = 2
+
     def judge(self):
         return numpy.array_equal(self.player == 1, self.answer == 1)
-
-if __name__ == '__main__':
-    pygame.init()
-    window = pygame.display.set_mode((800, 600))
-    interface = Interface(window)
-    interface.draw()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-        pygame.display.update()
