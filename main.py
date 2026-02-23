@@ -69,5 +69,12 @@ while isRunning:
                             elif i[1] == 'set_color':
                                 color = i[2]
                                 now_interface = "设置界面"
-
+        # 每帧绘制当前界面
+    if now_interface == "游戏界面":
+        if now_game:
+            now_game.draw()
+    else:
+        interface.interface_draw('interface.json', window, now_interface)  # 正常绘制
+        if now_interface == "关卡选择":
+            game.display_level_buttons(window, levels)  # 额外绘制关卡按钮
     pygame.display.update()

@@ -68,13 +68,14 @@ class Game:
         print('Game对象创建成功')
 
     def draw(self):
+
         start_x = (960 - len(self.player) * 20) // 2
         self.start_x = start_x
         start_y = (540 - len(self.player) * 20) // 2
         self.start_y = start_y
         row = len(self.player[0]) * 20
         col = len(self.player) * 20
-        self.window.fill('white')
+        self.window.fill((245, 245, 220))
 
         # 打印数织网格
         self.rect = pygame.draw.rect(self.window, 'black', (start_x, start_y, row, col), 1)
