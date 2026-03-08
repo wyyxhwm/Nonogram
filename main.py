@@ -59,7 +59,7 @@ while isRunning:
                     for i in buttons.values():
                         if i[0].collidepoint(pos):
                             if i[1] == 'goto':
-                                now_interface = interface.handle_events(window, buttons, pos)
+                                now_interface = interface.handle_events(buttons, pos)
                             elif i[1] == 'toggle_music':
                                 if pygame.mixer.music.get_busy():
                                     pygame.mixer.music.stop()
@@ -78,4 +78,3 @@ while isRunning:
         if now_interface == "关卡选择":
             game.display_level_buttons(window, levels)  # 额外绘制关卡按钮
     pygame.display.update()
-

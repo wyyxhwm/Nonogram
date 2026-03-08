@@ -1,4 +1,3 @@
-
 import pygame
 import json
 
@@ -38,7 +37,7 @@ def interface_draw( interface_json, window, interface):
                     num += 1
     return buttons
 
-def handle_events(window, buttons: dict, pos):
+def handle_events(buttons: dict, pos):
     for i in buttons.values():
         if i[0].collidepoint(pos):
             if i[1] == 'goto':
@@ -52,16 +51,3 @@ def handle_events(window, buttons: dict, pos):
                 print('interface/handle_events()错误')
     return False
 
-if __name__ == '__main__':
-    pygame.init()
-    window = pygame.display.set_mode((800, 600))
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                break
-
-        buttons = interface_draw('interface.json', window, '设置界面')
-        print(buttons)
-        pygame.display.update()
